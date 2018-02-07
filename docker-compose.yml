@@ -1,0 +1,24 @@
+version: "2"
+services:
+
+  siatest-sia:
+    image: sia
+    restart: always
+    expose:
+      - "8000"
+    volumes:
+      - ./data/sia:/mnt/sia
+
+  siatest:
+    image: sia-test
+    depends_on:
+      - siatest-sia
+    expose: 
+      - "22"
+    environment:
+      - SIA_WALLET_PASSWORD=gertjaap
+
+networks:    
+  default:
+    external:
+      name: siatest-network
