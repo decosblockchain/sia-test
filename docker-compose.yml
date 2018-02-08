@@ -8,6 +8,7 @@ services:
       - "8000"
     volumes:
       - ./data/sia:/mnt/sia
+      - ./data/files:/mnt/files
 
   siatest:
     image: sia-test
@@ -17,6 +18,8 @@ services:
       - "22"
     environment:
       - SIA_WALLET_PASSWORD=gertjaap
+    volumes:
+      - ./data/files:/mnt/files
 
 networks:    
   default:

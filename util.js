@@ -214,3 +214,42 @@ module.exports.siaToHastings = function(sc) {
 module.exports.hastingsToSia = function(hastings) {
     return sia.hastingsToSiacoins(hastings);
 }
+
+module.exports.upload = function(source, target, callback) {
+    if(this.siad == null) return callback("Connect to Sia first", null);
+    this.siad.call({
+        method : 'POST',
+        url: '/renter/upload/' + target,
+        qs: {
+            source : source
+        }
+    })
+    .then((response) => {
+        callback(null, response);
+    })
+    .catch((err) => { callback(err, null); });
+}
+
+module.exports.files = function(callback) {
+    if(this.siad == null) return callback("Connect to Sia first", null);
+    this.siad.call('/renter/files')
+    .then((response) => {
+        callback(null, response);
+    })
+    .catch((err) => { callback(err, null); });
+}
+
+module.exports.download = function(filename, target, callback) {
+    if(this.siad == null) return callback("Connect to Sia first", null);
+    this.siad.call({
+        url: '/renter/download/' + filename,
+        qs: {
+            destination : target
+        },
+        timeout: 60000
+    })
+    .then((response) => {
+        callback(null, response);
+    })
+    .catch((err) => { callback(err, null); });
+}
